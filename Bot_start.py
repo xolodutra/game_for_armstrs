@@ -15,6 +15,17 @@ logging.basicConfig(
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     filename='bot.log',
                     level=logging.INFO)
+# Создаем функцию guess_number для игры с пользователем в числа
+
+def guess_number(update, context):
+    print(context.args)
+    # проверяем какие данные ввёл пользователь
+    if context.args:
+        message = "Вы ввели число"
+    else:
+        message = "Введите целое число"
+    update.message.reply_text(message)
+
 
 # Создадим функцию обработки события в телеге:
 
@@ -31,15 +42,20 @@ def talk_to_me(update, context):
 
 def inpu_bot():
 #ключ бота от botFather
-    updater = Updater(settings.API_KEY, use_context=True)
+    mybot = Updater(settings.API_KEY, use_context=True)
 
-    dp = updater.dispatcher
+    dp = mybot.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
+    dp.add_handler(CommandHandler("guess", guess_number))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
 
 # Запрашиваем у телеги есть ли новые сообщения?
-    updater.start_polling()
-    updater.idle()
+    logging.info("Бот стартовал")
+    mybot.start_polling()
+    mybot.idle()
+
+
+
 
 if __name__=="__main__":
     inpu_bot()
