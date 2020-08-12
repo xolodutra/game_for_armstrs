@@ -59,6 +59,7 @@ def inpu_bot():
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
     dp.add_handler(CommandHandler("guess", guess_number))
+    dp.add_handler(CommandHandler("cat", sand_cat_picture))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
 
 # Запрашиваем у телеги есть ли новые сообщения?
