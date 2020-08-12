@@ -6,7 +6,7 @@
 
 import logging
 
-
+from random import randint
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 import settings
@@ -15,6 +15,15 @@ logging.basicConfig(filename='bot.log',
                     level=logging.INFO)
 # Создаем функцию guess_number для игры с пользователем в числа
 
+def play_random_numbers(user_number):
+    bot_number = randint(user_number-10, user_number+10)
+    if user_number > bot_number:
+        message = f"Ты загадал {user_number}, я загадал {bot_number}, ты выиграл!"
+    elif user_number == bot_number:
+        message = f"Ты загадал {user_number}, я загадал {bot_number}, ничья!"
+    else: 
+        message = f"Ты загадал {user_number}, я загадал {bot_number}, я выиграл!"
+    return message
 
 def guess_number(update, context):
     print(context.args)
@@ -22,7 +31,7 @@ def guess_number(update, context):
     if context.args:
         try:
             user_number = int(context.args[0])
-            message = "Вы ввели число"
+            message = play_random_numbers(user_number)
         except (TypeError, ValueError):
             message = "Введите целое число"
     else:
