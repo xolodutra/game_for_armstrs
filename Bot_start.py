@@ -40,6 +40,9 @@ def guess_number(update, context):
 
 # Создадим функцию обработки события в телеге:
 
+def sand_cat_picture(update, context):
+    message = "Введите целого кота"
+    update.message.reply_text(message)
 
 def greet_user(update, context):
     print("Вызыван /start")
