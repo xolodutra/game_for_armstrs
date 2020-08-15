@@ -4,15 +4,32 @@
 # Импортируем из библиотеки python-telegram-bot класс Updater
 # который коммуницирует с платформой телеги
 
-import logging
 
-from random import randint
+from glob import glob
+import logging
+from random import choice, randint
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 import settings
 
 logging.basicConfig(filename='bot.log',
                     level=logging.INFO)
+
+# Создаём функцию send_cat_picture для рандомной выдачи картинки с котиком
+
+def send_cat_picture(update, context):
+    # сперва получим все картинки в список с помощью glob
+    cat_photos_list = glob('images/cat*.*')
+    # с помощью функции choice берём рандомное название картинки из этого списка
+    cat_pic_filename = choice(cat_photos_list)
+    # получаем id чата пользователя
+    chat_id = update.effective_chat.id
+    # и отправляем явно в чат с этим id
+    context.bot.send_photo(chat_id=chat_id, photo=open(cat_pic_filename, 'rb'))
+    # pass
+    # message = "Введите целого кота"
+    # update.message.reply_text(message)
+
 # Создаем функцию guess_number для игры с пользователем в числа
 
 def play_random_numbers(user_number):
@@ -40,9 +57,6 @@ def guess_number(update, context):
 
 # Создадим функцию обработки события в телеге:
 
-def sand_cat_picture(update, context):
-    message = "Введите целого кота"
-    update.message.reply_text(message)
 
 def greet_user(update, context):
     print("Вызыван /start")
@@ -62,7 +76,7 @@ def inpu_bot():
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
     dp.add_handler(CommandHandler("guess", guess_number))
-    dp.add_handler(CommandHandler("cat", sand_cat_picture))
+    dp.add_handler(CommandHandler("cat", send_cat_picture))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
 
 # Запрашиваем у телеги есть ли новые сообщения?
