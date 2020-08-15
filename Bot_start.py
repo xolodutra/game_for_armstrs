@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Импортируем из библиотеки python-telegram-bot класс Updater
-# который коммуницирует с платформой телеги
-
-
+from emoji import emojize
 from glob import glob
 import logging
 from random import choice, randint
@@ -60,15 +57,20 @@ def guess_number(update, context):
 
 def greet_user(update, context):
     print("Вызыван /start")
-    update.message.reply_text('Здорова!!!!!!')
+    smile = get_smile()
+    update.message.reply_text(f"Ну здорова, отец {smile}!")
 
 # Создадим функцию __inpu_bot__ где и будет происходить вся логика работы бота:
 
-
 def talk_to_me(update, context):
+    smile = get_smile()
     user_text = update.message.text
     print(user_text)
-    update.message.reply_text(user_text)
+    update.message.reply_text(f"{user_text} {smile}")
+
+def get_smile():
+    smile = choice(settings.USER_EMOJI)
+    return emojize(smile, use_aliases=True)
 
 
 def inpu_bot():
