@@ -4,6 +4,7 @@
 from emoji import emojize
 from glob import glob
 import logging
+from telegram import ReplayKeyboardMarkup
 from random import choice, randint
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
