@@ -18,10 +18,10 @@ logging.basicConfig(filename='bot.log', level=logging.INFO)
 def greet_user(update, context):
     print("Вызыван /start")
     context.user_data['emoji'] = get_smile(context.user_data)
-    my_keyboard = ReplyKeyboardMarkup([['Очень нужен котик']])
+    # my_keyboard = ReplyKeyboardMarkup([['Очень нужен котик']])
     update.message.reply_text(
         f"Ну здорова, отец {context.user_data['emoji']}!",
-        reply_markup=my_keyboard
+        reply_markup=main_keyboard()
         )
 
 
@@ -31,7 +31,7 @@ def talk_to_me(update, context):
     context.user_data['emoji'] = get_smile(context.user_data)
     user_text = update.message.text
     print(user_text)
-    update.message.reply_text(f"{user_text} {context.user_data['emoji']}")
+    update.message.reply_text(f"{user_text} {context.user_data['emoji']}", reply_markup=main_keyboard())
 
 def get_smile(user_data):
     if 'emoji' not in user_data:
@@ -50,7 +50,7 @@ def send_cat_picture(update, context):
     # получаем id чата пользователя
     chat_id = update.effective_chat.id
     # и отправляем явно в чат с этим id
-    context.bot.send_photo(chat_id=chat_id, photo=open(cat_pic_filename, 'rb'))
+    context.bot.send_photo(chat_id=chat_id, photo=open(cat_pic_filename, 'rb'), reply_markup=main_keyboard())
     # pass
     # message = "Введите целого кота"
     # update.message.reply_text(message)
@@ -82,6 +82,9 @@ def guess_number(update, context):
         message = "Введите целое число"
     update.message.reply_text(message)
 
+# Функция для управдения клавиатурой
+def main_keyboard():
+    return ReplyKeyboardMarkup([['Очень нужен котик', 'Тест']])
 
 def inpu_bot():
     mybot = Updater(settings.API_KEY, use_context=True)
