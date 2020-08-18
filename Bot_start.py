@@ -4,7 +4,7 @@
 from emoji import emojize
 from glob import glob
 import logging
-from telegram import ReplyKeyboardMarkup
+from telegram import ReplyKeyboardMarkup, KeyboardButton
 from random import choice, randint
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
@@ -82,9 +82,21 @@ def guess_number(update, context):
         message = "Введите целое число"
     update.message.reply_text(message)
 
+def user_coordinates(update, context):
+    context.user_data['emoji'] = get_smile(context.user_data)
+    coords = update.message.location
+    update.message.reply_text(
+        f"Ваши координаты {coords} {context.user_data['emoji']}!",
+        reply_markup=main_keyboard()
+    )
+    print(coords)
+
+
 # Функция для управдения клавиатурой
 def main_keyboard():
-    return ReplyKeyboardMarkup([['Очень нужен котик', 'Тест']])
+    return ReplyKeyboardMarkup([
+        ['Очень нужен котик', KeyboardButton('Мои координаты', request_location=True)]
+        ])
 
 def inpu_bot():
     mybot = Updater(settings.API_KEY, use_context=True)
@@ -93,6 +105,7 @@ def inpu_bot():
     dp.add_handler(CommandHandler("guess", guess_number))
     dp.add_handler(CommandHandler("cat", send_cat_picture))
     dp.add_handler(MessageHandler(Filters.regex('^(Очень нужен котик)$'), send_cat_picture))
+    dp.add_handler(MessageHandler(Filters.location, user_coordinates))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
 
 # Запрашиваем у телеги есть ли новые сообщения?
