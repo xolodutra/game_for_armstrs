@@ -25,5 +25,5 @@ def play_random_numbers(user_number):
 # Функция для управдения клавиатурой
 def main_keyboard():
     return ReplyKeyboardMarkup([
-        ['Очень нужен котик', KeyboardButton('Мои координаты', request_location=True)]
+        ['Очень нужен котик', KeyboardButton('Мои координаты', request_location=True), 'Заполнить анкету']
         ])
