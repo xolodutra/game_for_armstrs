@@ -35,6 +35,7 @@ def anketa_comment(update, context):
     update.message.reply_text(user_text, reply_markup=main_keyboard(),
                                 parse_mode=ParseMode.HTML)
     return ConversationHandler.END
+
 def anketa_skip(update, context):
     user_text = anketa_format(context.user_data['anketa'])
     update.message.reply_text(user_text, reply_markup=main_keyboard(),
@@ -45,7 +46,6 @@ def anketa_format(user_anketa):
     user_text = f"""<b>Имя Фамилия:</b> {user_anketa['name']}
 <b>Оценка:</b> {user_anketa['rating']}
 """
-    if user_anketa.get('coment'):
+    if user_anketa.get('comment'):
         user_text += f"<b>Комментарий:</b> {user_anketa['comment']}"
-    
     return user_text
