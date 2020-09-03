@@ -4,7 +4,7 @@
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 
-from anketa import anketa_start, anketa_name
+from anketa import anketa_start, anketa_name, anketa_rating, anketa_comment, anketa_skip
 from handlers import (greet_user, guess_number, send_cat_picture, user_coordinates, 
                 talk_to_me)
 import settings
@@ -22,7 +22,12 @@ def inpu_bot():
             MessageHandler(Filters.regex('^(Заполнить анкету)$'), anketa_start)
         ],
         states={
-            "name":[MessageHandler(Filters.text, anketa_name)]
+            "name":[MessageHandler(Filters.text, anketa_name)],
+            "rating":[MessageHandler(Filters.regex('^(1|2|3|4|5)$'), anketa_rating)],
+            "comment":[
+                CommandHandler('skip', anketa_skip),
+                MessageHandler(Filters.text, anketa_comment)
+            ]
         },
         fallbacks=[]
     )
