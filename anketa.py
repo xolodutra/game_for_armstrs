@@ -49,3 +49,6 @@ def anketa_format(user_anketa):
     if user_anketa.get('comment'):
         user_text += f"<b>Комментарий:</b> {user_anketa['comment']}"
     return user_text
+
+def anketa_dontknow(update, context):
+    update.message.reply_text("Нихуяшеньки не понял. Кнопки жми, говорю")

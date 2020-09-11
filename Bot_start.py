@@ -4,7 +4,8 @@
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 
-from anketa import anketa_start, anketa_name, anketa_rating, anketa_comment, anketa_skip
+from anketa import (anketa_start, anketa_name, anketa_rating, 
+                    anketa_comment, anketa_skip, anketa_dontknow)
 from handlers import (greet_user, guess_number, send_cat_picture, user_coordinates, 
                 talk_to_me)
 import settings
@@ -29,7 +30,9 @@ def inpu_bot():
                 MessageHandler(Filters.text, anketa_comment)
             ]
         },
-        fallbacks=[]
+        fallbacks=[
+            MessageHandler(Filters.text | Filters.photo | Filters.video | Filters.document | Filters.voice | Filters.sticker | Filters.location, anketa_dontknow)
+        ]
     )
     dp.add_handler(anketa)
 # Обработка анкеты - диалогового бота - конец
